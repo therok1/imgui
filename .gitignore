@@ -25,6 +25,7 @@ ipch
 *.suo
 *.VC.db
 *.VC.VC.opendb
+**.vcxproj
 
 ## Commonly used CMake directories
 /build*/
@@ -54,3 +55,5 @@ examples/example_sdl_metal/example_sdl_metal
 examples/example_sdl_opengl2/example_sdl_opengl2
 examples/example_sdl_opengl3/example_sdl_opengl3
 examples/example_sdl_sdlrenderer/example_sdl_sdlrenderer
+/bin/Debug-windows-x86_64/ImGui
+/bin-int/Debug-windows-x86_64/ImGui
