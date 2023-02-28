@@ -12373,7 +12373,7 @@ static void ImGui::NavUpdateWindowing()
     // - AltGR is normally Alt+Ctrl but we can't reliably detect it (not all backends/systems/layout emit it as Alt+Ctrl). But even on keyboards without AltGR we don't want Alt+Ctrl to open menu anyway.
     if (nav_keyboard_active && IsKeyPressed(ImGuiMod_Alt, ImGuiKeyOwner_None))
     {
-        g.NavWindowingToggleLayer = true;
+        g.NavWindowingToggleLayer = false;
         g.NavInputSource = ImGuiInputSource_Keyboard;
     }
     if (g.NavWindowingToggleLayer && g.NavInputSource == ImGuiInputSource_Keyboard)
