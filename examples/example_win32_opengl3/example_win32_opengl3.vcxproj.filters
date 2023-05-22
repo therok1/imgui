@@ -25,14 +25,7 @@
     <ClCompile Include="..\..\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-<<<<<<<< HEAD:examples/example_win32_opengl3/example_win32_opengl3.vcxproj.filters
     <ClCompile Include="..\..\backends\imgui_impl_win32.cpp">
-========
-    <ClCompile Include="..\..\backends\imgui_impl_sdl2.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\backends\imgui_impl_opengl3.cpp">
->>>>>>>> parent of 061ddac4 (Merge pull request #3 from therok1/revert-2-docking):examples/example_sdl2_opengl3/example_sdl2_opengl3.vcxproj.filters
       <Filter>sources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui_tables.cpp">
@@ -52,11 +45,7 @@
     <ClInclude Include="..\..\imgui_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
-<<<<<<<< HEAD:examples/example_win32_opengl3/example_win32_opengl3.vcxproj.filters
     <ClInclude Include="..\..\backends\imgui_impl_win32.h">
-========
-    <ClInclude Include="..\..\backends\imgui_impl_sdl2.h">
->>>>>>>> parent of 061ddac4 (Merge pull request #3 from therok1/revert-2-docking):examples/example_sdl2_opengl3/example_sdl2_opengl3.vcxproj.filters
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\backends\imgui_impl_opengl3.h">
