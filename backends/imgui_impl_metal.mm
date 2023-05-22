@@ -13,7 +13,7 @@
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
-//  2022-XX-XX: Metal: Added support for multiple windows via the ImGuiPlatformIO interface.
+//  2023-XX-XX: Metal: Added support for multiple windows via the ImGuiPlatformIO interface.
 //  2022-08-23: Metal: Update deprecated property 'sampleCount'->'rasterSampleCount'.
 //  2022-07-05: Metal: Add dispatch synchronization.
 //  2022-06-30: Metal: Use __bridge for ARC based systems.
@@ -147,9 +147,15 @@ bool ImGui_ImplMetal_Init(id<MTLDevice> device)
 
 void ImGui_ImplMetal_Shutdown()
 {
-    ImGui_ImplMetal_ShutdownPlatformInterface();
+    ImGui_ImplMetal_Data* bd = ImGui_ImplMetal_GetBackendData();
+    IM_ASSERT(bd != nullptr && "No renderer backend to shutdown, or already shutdown?");
     ImGui_ImplMetal_DestroyDeviceObjects();
     ImGui_ImplMetal_DestroyBackendData();
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.BackendRendererName = nullptr;
+    io.BackendRendererUserData = nullptr;
+    io.BackendFlags &= ~ImGuiBackendFlags_RendererHasVtxOffset;
 }
 
 void ImGui_ImplMetal_NewFrame(MTLRenderPassDescriptor* renderPassDescriptor)
@@ -357,7 +363,7 @@ void ImGui_ImplMetal_DestroyFontsTexture()
     ImGui_ImplMetal_Data* bd = ImGui_ImplMetal_GetBackendData();
     ImGuiIO& io = ImGui::GetIO();
     bd->SharedMetalContext.fontTexture = nil;
-    io.Fonts->SetTexID(nullptr);
+    io.Fonts->SetTexID(0);
 }
 
 bool ImGui_ImplMetal_CreateDeviceObjects(id<MTLDevice> device)
@@ -415,7 +421,7 @@ static void ImGui_ImplMetal_CreateWindow(ImGuiViewport* viewport)
     void* handle = viewport->PlatformHandleRaw ? viewport->PlatformHandleRaw : viewport->PlatformHandle;
     IM_ASSERT(handle != nullptr);
 
-    id<MTLDevice> device = [bd->SharedMetalContext.depthStencilState device];
+    id<MTLDevice> device = bd->SharedMetalContext.device;
     CAMetalLayer* layer = [CAMetalLayer layer];
     layer.device = device;
     layer.framebufferOnly = YES;

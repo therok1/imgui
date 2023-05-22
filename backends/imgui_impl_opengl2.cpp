@@ -20,7 +20,7 @@
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
-//  2022-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
+//  2023-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
 //  2022-10-11: Using 'nullptr' instead of 'NULL' as per our switch to C++11.
 //  2021-12-08: OpenGL: Fixed mishandling of the the ImDrawCmd::IdxOffset field! This is an old bug but it never had an effect until some internal rendering changes in 1.86.
 //  2021-06-29: Reorganized backend to pull data from a single structure to facilitate usage with multiple-contexts (all g_XXXX access changed to bd->XXXX).
@@ -44,6 +44,13 @@
 #include <stddef.h>     // intptr_t
 #else
 #include <stdint.h>     // intptr_t
+#endif
+
+// Clang/GCC warnings with -Weverything
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-macros"                      // warning: macro is not used
+#pragma clang diagnostic ignored "-Wnonportable-system-include-path"
 #endif
 
 // Include OpenGL header (without an OpenGL loader) requires a bit of fiddling
@@ -297,30 +304,6 @@ void    ImGui_ImplOpenGL2_DestroyDeviceObjects()
     ImGui_ImplOpenGL2_DestroyFontsTexture();
 }
 
-//--------------------------------------------------------------------------------------------------------
-// MULTI-VIEWPORT / PLATFORM INTERFACE SUPPORT
-// This is an _advanced_ and _optional_ feature, allowing the backend to create and handle multiple viewports simultaneously.
-// If you are new to dear imgui or creating a new binding for dear imgui, it is recommended that you completely ignore this section first..
-//--------------------------------------------------------------------------------------------------------
-
-static void ImGui_ImplOpenGL2_RenderWindow(ImGuiViewport* viewport, void*)
-{
-    if (!(viewport->Flags & ImGuiViewportFlags_NoRendererClear))
-    {
-        ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
-    ImGui_ImplOpenGL2_RenderDrawData(viewport->DrawData);
-}
-
-static void ImGui_ImplOpenGL2_InitPlatformInterface()
-{
-    ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
-    platform_io.Renderer_RenderWindow = ImGui_ImplOpenGL2_RenderWindow;
-}
-
-static void ImGui_ImplOpenGL2_ShutdownPlatformInterface()
-{
-    ImGui::DestroyPlatformWindows();
-}
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
